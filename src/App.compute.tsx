@@ -237,11 +237,11 @@ export const updateGlobalCounters = async (
 ) => {
   const [globalImpactRes] = await Promise.all([getDoc(globalImpactDocRef)]);
 
-  globalStateReference.setGlobalLeaderName(globalImpactRes.data()?.discord);
-  globalStateReference.setGlobalLevelCounter(globalImpactRes.data()?.level);
-  globalStateReference.setGlobalImpactCounter(globalImpactRes.data()?.total);
+  globalStateReference.setGlobalLeaderName(globalImpactRes.data().discord);
+  globalStateReference.setGlobalLevelCounter(globalImpactRes.data().level);
+  globalStateReference.setGlobalImpactCounter(globalImpactRes.data().total);
   globalStateReference.setGlobalScholarshipCounter(
-    globalImpactRes.data()?.scholarships
+    globalImpactRes.data().scholarships
   );
 };
 

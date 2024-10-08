@@ -153,7 +153,7 @@ export const RenderActionBarControls = ({
           onMouseEnter={() => handleHover("bossMode", true)}
           onMouseLeave={() => handleHover("bossMode", false)}
         >
-          💎 Program AI App
+          ☀️ Sunset
         </StyledFeature>
         &nbsp; &nbsp;
         <StyledFeature

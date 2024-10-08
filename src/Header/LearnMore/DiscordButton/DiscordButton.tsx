@@ -216,13 +216,13 @@ export const DiscordButton = () => {
           }}
           onMouseDown={() =>
             logEvent(analytics, "select_promotion", {
-              creative_name: `https://www.patreon.com/NotesAndOtherStuff`,
+              creative_name: `https://www.patreon.com/RobotsBuildingEducation`,
               creative_slot: `About Slot`,
               promotion_id: `Rox`,
               promotion_name: "advertising_launch",
             })
           }
-          href="https://www.patreon.com/NotesAndOtherStuff"
+          href="https://www.patreon.com/RobotsBuildingEducation"
           target={"_blank"}
           style={{
             color: "white",

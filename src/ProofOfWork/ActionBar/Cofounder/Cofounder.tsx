@@ -424,7 +424,7 @@ export const Cofounder = ({
     // let prompt = customInstructions(formData, "creator-image");
 
     // const response = await fetch(
-    //   "https://us-central1-learn-robotsbuildingeducation.cloudfunctions.net/app/create-image",
+    //   "https://us-central1-embedded-rox.cloudfunctions.net/app/create-image",
     //   {
     //     method: postInstructions.method,
     //     headers: postInstructions.headers,

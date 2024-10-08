@@ -230,13 +230,13 @@ export const Auth = ({
                               or{" "}
                               <a
                                 target="_blank"
-                                href="https://program-ai.app/"
+                                href="https://embedded-rox.app"
                                 style={{
                                   color: "white",
                                   textDecoration: "underline",
                                 }}
                               >
-                                Program AI App.
+                                Sunset.
                               </a>
                             </div>
                             <br />

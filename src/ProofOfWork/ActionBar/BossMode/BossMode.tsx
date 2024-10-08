@@ -1779,7 +1779,7 @@ export const BossMode = ({
                 <br />
 
                 <a
-                  href="https://program-ai.app"
+                  href="https://embedded-rox.app"
                   style={{
                     textShadow: "0px 0px black",
                     textDecoration: "underline",
@@ -1787,7 +1787,7 @@ export const BossMode = ({
                     fontWeight: "bolder",
                   }}
                 >
-                  Go to Program AI App
+                  Go to Sunset
                 </a>
                 {/* <br />
                 <br />

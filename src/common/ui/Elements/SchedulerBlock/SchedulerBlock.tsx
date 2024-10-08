@@ -18,7 +18,7 @@ import { useChatStream } from "../Stream/useChatCompletion"; // Import the useCh
 import Markdown from "react-markdown";
 
 const postInstructions = {
-  url: "https://us-central1-learn-robotsbuildingeducation.cloudfunctions.net/app/prompt",
+  url: "https://us-central1-embedded-rox.cloudfunctions.net/app/prompt",
   method: "POST",
   headers: {
     "Content-Type": "application/json",

@@ -119,9 +119,9 @@ export const Landing = ({
         strategically using a decision map with hints and guidance. After
         figuring out a solution, request feedback to see how you can improve.
       </Feature>
-      <Feature title="Program AI App" emoji="💎">
-        Connect to Program AI App with your accounts keys and answer 100+
-        questions based on the material found here!
+      <Feature title="Sunset" emoji="☀️">
+        Connect to Sunset with your accounts keys and answer 100+ questions
+        based on the material found here!
       </Feature>
       {/* <Feature title="Assistance" emoji="🌀">
         An AI tool that helps you write code, generate schedules, create

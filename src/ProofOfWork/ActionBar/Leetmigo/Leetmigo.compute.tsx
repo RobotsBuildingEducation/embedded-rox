@@ -77,7 +77,7 @@ export const getRandomTree = () => {
  * @property {Object} headers - The headers for the request.
  */
 export const postInstructions = {
-  url: "https://us-central1-learn-robotsbuildingeducation.cloudfunctions.net/app/prompt",
+  url: "https://us-central1-embedded-rox.cloudfunctions.net/app/prompt",
   method: "POST",
   headers: {
     "Content-Type": "application/json",

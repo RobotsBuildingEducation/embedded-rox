@@ -75,7 +75,7 @@ import { Auth } from "./App.auth";
 import { useSharedNostr } from "./App.web5";
 import RandomCharacter from "./common/ui/Elements/RandomCharacter/RandomCharacter";
 logEvent(analytics, "page_view", {
-  page_location: "https://learn-robotsbuildingeducation.firebaseapp.com/",
+  page_location: "https://embedded-rox.firebaseapp.com/",
 });
 
 let App = () => {
@@ -524,7 +524,7 @@ let App = () => {
         </a> */}
         <br />
         <a
-          href="https://chatgpt.com/g/g-LPoMAiBoa-sunset"
+          href="https://chatgpt.com/g/g-09h5uQiFC-robots-building-education"
           target="_blank"
           style={{ textDecoration: "underline" }}
         >

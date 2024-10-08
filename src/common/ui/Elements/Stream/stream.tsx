@@ -1,6 +1,5 @@
 import React, { useState } from "react";
 import { ReadableStream } from "web-streams-polyfill";
-
 // Converts the OpenAI API params + chat messages list + an optional AbortSignal into a shape that
 // the fetch interface expects.
 export const getOpenAiRequestOptions = (
@@ -22,11 +21,8 @@ export const getOpenAiRequestOptions = (
   }),
   signal,
 });
-
 const CHAT_COMPLETIONS_URL = "https://api.openai.com/v1/chat/completions";
-
 const textDecoder = new TextDecoder("utf-8");
-
 // Takes a set of fetch request options and calls the onIncomingChunk and onCloseStream functions
 // as chunks of a chat completion's data are returned to the client, in real-time.
 export const openAiStreamingDataHandler = async (
@@ -36,20 +32,16 @@ export const openAiStreamingDataHandler = async (
 ) => {
   const beforeTimestamp = Date.now();
   const response = await fetch(CHAT_COMPLETIONS_URL, requestOpts);
-
   if (!response.ok) {
     throw new Error(
       `Network response was not ok: ${response.status} - ${response.statusText}`
     );
   }
-
   if (!response.body) {
     throw new Error("No body included in POST response object");
   }
-
   let content = "";
   let role = "";
-
   const reader = response.body.getReader();
   const stream = new ReadableStream({
     start(controller) {
@@ -66,11 +58,9 @@ export const openAiStreamingDataHandler = async (
       }
     },
   });
-
   for await (const newData of stream) {
     const decodedData = textDecoder.decode(newData);
     const lines = decodedData.split(/(\n){2}/);
-
     const chunks = lines
       .map((line) => line.replace(/(\n)?^data:\s*/, "").trim())
       .filter((line) => line !== "" && line !== "[DONE]")
@@ -83,32 +73,24 @@ export const openAiStreamingDataHandler = async (
         }
       })
       .filter((chunk) => chunk !== null);
-
     for (const chunk of chunks) {
       const contentChunk = (chunk.choices[0].delta.content ?? "").replace(
         /^`\s*/,
         "`"
       );
       const roleChunk = chunk.choices[0].delta.role ?? "";
-
       content = `${content}${contentChunk}`;
       role = `${role}${roleChunk}`;
-
       onIncomingChunk(contentChunk, roleChunk);
     }
   }
-
   onCloseStream(beforeTimestamp);
-
   return { content, role };
 };
-
 const MILLISECONDS_PER_SECOND = 1000;
-
 // Utility method for transforming a chat message decorated with metadata to a more limited shape
 // that the OpenAI API expects.
 const officialOpenAIParams = ({ content, role }) => ({ content, role });
-
 // Utility method for transforming a chat message that may or may not be decorated with metadata
 // to a fully-fledged chat message with metadata.
 const createChatMessage = ({ content, role, ...restOfParams }) => ({
@@ -122,7 +104,6 @@ const createChatMessage = ({ content, role, ...restOfParams }) => ({
     ...restOfParams.meta,
   },
 });
-
 // Utility method for updating the last item in a list.
 export const updateLastItem = (msgFn) => (currentMessages) =>
   currentMessages.map((msg, i) => {
@@ -131,12 +112,10 @@ export const updateLastItem = (msgFn) => (currentMessages) =>
     }
     return msg;
   });
-
 export const useChatCompletion = (apiParams) => {
   const [messages, _setMessages] = useState([]);
   const [loading, setLoading] = useState(false);
   const [controller, setController] = useState(null);
-
   // Abort an in-progress streaming response
   const abortResponse = () => {
     if (controller) {
@@ -144,21 +123,18 @@ export const useChatCompletion = (apiParams) => {
       setController(null);
     }
   };
-
   // Reset the messages list as long as a response isn't being loaded.
   const resetMessages = () => {
     if (!loading) {
       _setMessages([]);
     }
   };
-
   // Overwrites all existing messages with the list of messages passed to it.
   const setMessages = (newMessages) => {
     if (!loading) {
       _setMessages(newMessages.map(createChatMessage));
     }
   };
-
   // When new data comes in, add the incremental chunk of data to the last message.
   const handleNewData = (chunkContent, chunkRole) => {
     _setMessages(
@@ -180,7 +156,6 @@ export const useChatCompletion = (apiParams) => {
       }))
     );
   };
-
   // Handles what happens when the stream of a given completion is finished.
   const closeStream = (beforeTimestamp) => {
     // Determine the final timestamp, and calculate the number of seconds the full request took.
@@ -188,7 +163,6 @@ export const useChatCompletion = (apiParams) => {
     const diffInSeconds =
       (afterTimestamp - beforeTimestamp) / MILLISECONDS_PER_SECOND;
     const formattedDiff = diffInSeconds.toFixed(2) + " sec.";
-
     // Update the messages list, specifically update the last message entry with the final
     // details of the full request/response.
     _setMessages(
@@ -204,20 +178,16 @@ export const useChatCompletion = (apiParams) => {
       }))
     );
   };
-
   const submitPrompt = React.useCallback(
     async (newMessages) => {
       // Don't let two streaming calls occur at the same time. If the last message in the list has
       // a `loading` state set to true, we know there is a request in progress.
       if (messages[messages.length - 1]?.meta?.loading) return;
-
       // If the array is empty or there are no new messages submited, do not make a request.
       if (!newMessages || newMessages.length < 1) {
         return;
       }
-
       setLoading(true);
-
       // Update the messages list with the new message as well as a placeholder for the next message
       // that will be returned from the API.
       const updatedMessages = [
@@ -230,15 +200,12 @@ export const useChatCompletion = (apiParams) => {
           meta: { loading: true },
         }),
       ];
-
       // Set the updated message list.
       _setMessages(updatedMessages);
-
       // Create a controller that can abort the entire request.
       const newController = new AbortController();
       const signal = newController.signal;
       setController(newController);
-
       // Define options that will be a part of the HTTP request.
       const requestOpts = getOpenAiRequestOptions(
         apiParams,
@@ -251,7 +218,6 @@ export const useChatCompletion = (apiParams) => {
           .map(officialOpenAIParams),
         signal
       );
-
       try {
         // Wait for all the results to be streamed back to the client before proceeding.
         await openAiStreamingDataHandler(
@@ -276,7 +242,6 @@ export const useChatCompletion = (apiParams) => {
     },
     [messages]
   );
-
   return {
     messages,
     loading,
