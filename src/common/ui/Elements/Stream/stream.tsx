@@ -1,5 +1,7 @@
+import { getToken } from "firebase/app-check";
 import React, { useState } from "react";
 import { ReadableStream } from "web-streams-polyfill";
+import { appCheck } from "../../../../database/firebaseResources";
 // Converts the OpenAI API params + chat messages list + an optional AbortSignal into a shape that
 // the fetch interface expects.
 export const getOpenAiRequestOptions = (
@@ -9,7 +11,7 @@ export const getOpenAiRequestOptions = (
 ) => ({
   headers: {
     "Content-Type": "application/json",
-    Authorization: `Bearer ${apiKey}`,
+    // Authorization: `Bearer ${apiKey}`,
   },
   method: "POST",
   body: JSON.stringify({
@@ -21,7 +23,9 @@ export const getOpenAiRequestOptions = (
   }),
   signal,
 });
-const CHAT_COMPLETIONS_URL = "https://api.openai.com/v1/chat/completions";
+// const CHAT_COMPLETIONS_URL = "https://api.openai.com/v1/chat/completions";
+const CHAT_COMPLETIONS_URL =
+  "https://us-central1-embedded-rox.cloudfunctions.net/app/prompt";
 const textDecoder = new TextDecoder("utf-8");
 // Takes a set of fetch request options and calls the onIncomingChunk and onCloseStream functions
 // as chunks of a chat completion's data are returned to the client, in real-time.
@@ -31,6 +35,9 @@ export const openAiStreamingDataHandler = async (
   onCloseStream
 ) => {
   const beforeTimestamp = Date.now();
+  const appCheckTokenResult = await getToken(appCheck);
+  const appCheckToken = appCheckTokenResult.token;
+  requestOpts["headers"]["X-Firebase-AppCheck"] = appCheckToken;
   const response = await fetch(CHAT_COMPLETIONS_URL, requestOpts);
   if (!response.ok) {
     throw new Error(

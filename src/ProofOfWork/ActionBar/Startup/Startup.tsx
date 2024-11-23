@@ -92,7 +92,7 @@ export const RenderActionBarControls = ({
         </StyledFeature>
         &nbsp; &nbsp;
         <a
-          href="https://chat.openai.com/g/g-09h5uQiFC-ms-roxana"
+          href="https://chatgpt.com/g/g-LPoMAiBoa-sunset"
           target="_blank"
           rel="noopener noreferrer"
         >

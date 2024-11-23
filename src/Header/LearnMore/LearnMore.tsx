@@ -99,7 +99,10 @@ export const LearnMore = ({ languageMode }) => {
                   content_type: "button",
                   item_id: "About",
                 });
-                localStorage.clear();
+                localStorage.removeItem("local_nsec");
+                localStorage.removeItem("local_npub");
+                localStorage.removeItem("uniqueId");
+                localStorage.removeItem("displayName");
                 window.location.reload();
               }}
             >

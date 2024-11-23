@@ -6,7 +6,8 @@
   "scripts": {
     "start": "vite",
     "build": "vite build",
-    "preview": "vite preview"
+    "preview": "vite preview",
+    "breaking-change": " npm run start -- --port=4445"
   },
   "dependencies": {
     "@aleph/openai-streaming-hooks": "^2.0.0",

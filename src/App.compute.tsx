@@ -25,6 +25,7 @@ import { CodeDisplay } from "./common/ui/Elements/CodeDisplay/CodeDisplay";
 import chat_loading_animation from "./common/anims/chat_loading_animation.json";
 import roxanaGif from "./common/media/images/roxanaGif.gif";
 import { useEffect } from "react";
+import StreamLoader from "./common/ui/Elements/StreamLoader/StreamLoader";
 
 export let unlockEverything = async (userStateReference) => {
   await updateDoc(userStateReference.userDocumentReference, {
@@ -150,6 +151,8 @@ export const setupUserDocument = async (
 ) => {
   const res = await getDoc(docRef);
 
+  console.log("RES", res.data());
+
   if (!res?.data()) {
     // let result = await web5?.dwn?.records?.create({
     //   data: {
@@ -161,30 +164,48 @@ export const setupUserDocument = async (
     //     published: true,
     //   },
     // });
+    let accs = parseInt(localStorage.getItem("accs") || "0", 10);
 
-    await setDoc(docRef, {
-      impact: 0,
-      userAuthObj: {
-        uid: uniqueID,
-      },
-      profile: decentralizedEducationTranscript,
-      progress: userProgression,
-      unlocks: userUnlocks,
-      watches: userWatches,
-      firstVisit: true,
-      displayName: localStorage.getItem("displayName"),
-      nostrPubKey: localStorage.getItem("local_npub"),
-    });
+    // Check if the user has already generated 3 questions
+    // if (accs >= 3) {
+    //   // Silently skip the function
+    //   return;
+    // }
+
+    // // Increment the counter and store it back in localStorage
+    // accs += 1;
+    // localStorage.setItem("accs", accs);
+
+    try {
+      await setDoc(docRef, {
+        impact: 0,
+        userAuthObj: {
+          uid: uniqueID,
+        },
+        profile: decentralizedEducationTranscript,
+        progress: userProgression,
+        unlocks: userUnlocks,
+        watches: userWatches,
+        firstVisit: true,
+        displayName: localStorage.getItem("displayName"),
+        nostrPubKey: localStorage.getItem("local_npub"),
+      });
+    } catch (error) {
+      console.log("failed to create", error);
+    }
     const response = await getDoc(docRef);
 
+    console.log("DRESS", response.data());
     userStateReference.setDatabaseUserDocument(response.data());
-    addKnowledgeStep(
-      "1",
-      "Launched a decentralized AI assistant that works inside of social media and started their first session with us at embedded-rox.app.",
-      "Got started",
-      "get-started"
-    );
+    // addKnowledgeStep(
+    //   "1",
+    //   "Launched a decentralized AI assistant that works inside of social media and started their first session with us at embedded-rox.app.",
+    //   "Got started",
+    //   "get-started"
+    // );
   } else {
+    console.log("HOLD ON", res.data());
+
     // consider updates from a DWN that wont be saved to your database
     // right now you don't need it because you're managing UI with fb already and there's no impact for wiring it in.
     // so what this means is that web5 is more concerned with decentralized messaging than it is the state of UI
@@ -256,8 +277,9 @@ export const handleUserAuthentication = async (appFunctions) => {
   localStorage.setItem("uniqueId", _uniqueId);
 
   const docRef = doc(database, "users", _uniqueId);
+  // console.log("DOC", docRef);
 
-  const globalImpactDocRef = doc(database, "global", "impact");
+  // const globalImpactDocRef = doc(database, "global", "impact");
 
   await setupUserDocument(
     docRef,
@@ -265,17 +287,17 @@ export const handleUserAuthentication = async (appFunctions) => {
     _uniqueId
     // appFunctions?.web5
   );
-  await updateGlobalCounters(
-    globalImpactDocRef,
-    appFunctions.globalStateReference
-  );
+  // await updateGlobalCounters(
+  //   globalImpactDocRef,
+  //   appFunctions.globalStateReference
+  // );
 
   appFunctions.userStateReference.setUserDocumentReference(docRef);
   const usersEmotionsCollectionRef = collection(docRef, "emotions");
 
-  appFunctions.globalStateReference.setGlobalDocumentReference(
-    globalImpactDocRef
-  );
+  // appFunctions.globalStateReference.setGlobalDocumentReference(
+  //   globalImpactDocRef
+  // );
   appFunctions.userStateReference.setUsersEmotionsCollectionReference(
     usersEmotionsCollectionRef
   );
@@ -1087,7 +1109,9 @@ export let RoxanaLoadingAnimation = ({
         <img width="150px" src={roxanaGif} />
       </div>
 
-      {header ? <h3>{header}</h3> : null}
+      {/* {header ? <h3>{header}</h3> : null} */}
+
+      <StreamLoader />
     </FadeInComponent>
   );
 };

@@ -114,6 +114,18 @@ export const AdaptiveLearning = ({
   };
 
   const handleSubmit = async (data) => {
+    // Retrieve the current count from localStorage
+    let adptvctrl = parseInt(localStorage.getItem("adptvctrl") || "0", 10);
+
+    // Check if the user has already generated 3 questions
+    if (adptvctrl >= 10) {
+      // Silently skip the function
+      return;
+    }
+
+    // Increment the counter and store it back in localStorage
+    adptvctrl += 1;
+    localStorage.setItem("adptvctrl", adptvctrl);
     setIsLoading(true);
     resetMessages();
 
@@ -361,13 +373,13 @@ export const AdaptiveLearning = ({
             <br />
             <strong>Instructions</strong>
             <p>{instructions}</p>
-
+            {/* 
             <div
               style={{ cursor: "pointer", padding: 20 }}
               onMouseDown={() => setIsEditing(true)}
             >
               <EditIcon /> <b>Edit instructions</b>
-            </div>
+            </div> */}
           </div>
         )}
         <br />

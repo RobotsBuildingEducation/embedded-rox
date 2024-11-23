@@ -231,10 +231,7 @@ let App = () => {
     setDataLoading(true);
 
     // const { web5 } = await Web5.connect();
-    console.log("pk", nostrPrivKey);
-    console.log("pk", nostrPubKey);
-    console.log(isEmpty(nostrPrivKey) && isEmpty(nostrPubKey));
-    console.log(!localStorage.getItem("uniqueId"));
+
     if (isEmpty(localStorage.getItem("local_nsec"))) {
       console.log("xx");
       setIsNotAuthed(true);
@@ -242,7 +239,7 @@ let App = () => {
       await handleUserAuthentication({
         uiStateReference,
         userStateReference,
-        globalStateReference,
+        // globalStateReference,
         updateUserEmotions,
       });
       setIsNotAuthed(false);
@@ -610,10 +607,10 @@ let App = () => {
                     ROX
                   </StyledRoxHeader>
                 </RiseUpAnimation>
-                {/* <div style={{ fontSize: 12 }}>
-                  AI features are currently disabled due to someone personally
+                {/* <b>
+                  AI features are currently disabled due to malicious user
                   attacking the platform.
-                </div> */}
+                </b> */}
                 <Header
                   languageMode={languageMode}
                   setLanguageMode={setLanguageMode}

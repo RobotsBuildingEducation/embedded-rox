@@ -121,6 +121,8 @@ export const ChatGPT = ({
   };
 
   const handleSubmit = async (event, prompt = null, promptType = null) => {
+    localStorage.removeItem("adptvctrl");
+    // localStorage.removeItem("advwsctrl");
     event.preventDefault();
 
     handleBitcoinAnimation();
@@ -149,7 +151,7 @@ export const ChatGPT = ({
     // Store the token in Firestore
 
     // Update the global state with the new balance
-    await updateImpact(result.impact, userStateReference, globalStateReference);
+    // await updateImpact(result.impact, userStateReference, globalStateReference);
 
     logEvent(analytics, "spend_virtual_currency", {
       value: result.impact,

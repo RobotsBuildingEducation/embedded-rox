@@ -1779,7 +1779,7 @@ export const BossMode = ({
                 <br />
 
                 <a
-                  href="https://embedded-rox.app"
+                  href="https://embedded-sunset.app"
                   style={{
                     textShadow: "0px 0px black",
                     textDecoration: "underline",

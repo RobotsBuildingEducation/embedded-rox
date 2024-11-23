@@ -86,6 +86,18 @@ export const EmotionalIntelligence = ({
   };
 
   const generateAdviceOrWisdom = async () => {
+    // let advwsctrl = parseInt(localStorage.getItem("advwsctrl") || "0", 10);
+
+    // // Check if the user has already generated 3 questions
+    // if (advwsctrl >= 3) {
+    //   // Silently skip the function
+    //   return;
+    // }
+
+    // // Increment the counter and store it back in localStorage
+    // advwsctrl += 1;
+    // localStorage.setItem("advwsctrl", advwsctrl);
+
     setChatGptResponse("");
     resetChatGptMessages();
 
@@ -102,7 +114,11 @@ export const EmotionalIntelligence = ({
     let savedData = formatEmotionItem(selectedEmotion, chatGptResponse, "ai");
     savedData = formatEmotionItem(savedData, emotionNote, "note");
 
-    await addDoc(usersEmotionsCollectionReference, savedData);
+    try {
+      await addDoc(usersEmotionsCollectionReference, savedData);
+    } catch (error) {
+      console.log("error motion", error);
+    }
     updateUserEmotions(usersEmotionsCollectionReference);
     setIsEmotionModalOpen(false);
     setChatGptResponse("");

@@ -4,13 +4,13 @@ import { getAnalytics, logEvent } from "firebase/analytics";
 import { getAuth, GoogleAuthProvider } from "firebase/auth";
 import { getFirestore } from "firebase/firestore";
 import StyledFirebaseAuth from "react-firebaseui/StyledFirebaseAuth";
+import { initializeAppCheck, ReCaptchaV3Provider } from "firebase/app-check";
 
 export const AuthComponent = (StyledFirebaseAuth as any).default
   ? (StyledFirebaseAuth as any).default
   : StyledFirebaseAuth;
 
 export const firebaseConfig = {
-  // apiKey: import.meta.env.VITE_FIREBASE_API_KEY,
   apiKey: "AIzaSyCEgh5mDAANNJTWfK5uvvLh6ctY23uZ32Q",
   authDomain: "embedded-rox.firebaseapp.com",
   projectId: "embedded-rox",
@@ -26,6 +26,15 @@ export const auth = getAuth(app);
 // console.log("xyz", auth.useDeviceLanguage());
 export const database = getFirestore(app);
 export const analytics = getAnalytics(app);
+
+if (window.location.hostname === "localhost") {
+  self.FIREBASE_APPCHECK_DEBUG_TOKEN = true;
+}
+
+export const appCheck = initializeAppCheck(app, {
+  provider: new ReCaptchaV3Provider("6LfzSlwqAAAAAOBN8hY2od3r34d5weAolezTCpR1"),
+  isTokenAutoRefreshEnabled: true,
+});
 
 export const uiConfig = {
   // Popup signin flow rather than redirect flow.
